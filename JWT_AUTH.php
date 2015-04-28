@@ -112,19 +112,17 @@ class JWT_AUTH {
         require_once JWT_AUTH_PLUGIN_DIR . 'lib/php-jwt/Exceptions/SignatureInvalidException.php';
         require_once JWT_AUTH_PLUGIN_DIR . 'lib/php-jwt/Authentication/JWT.php';
 
-        $client_id = WP_Auth0_Options::get( 'client_id' );
-        $client_secret = WP_Auth0_Options::get( 'client_secret' );
+        $aud = WP_Auth0_Options::get( 'aud' );
+        $secret = WP_Auth0_Options::get( 'secret' );
 
         $encUser = str_replace('Bearer ', '', $authorization);
-
-        $secret = base64_decode(strtr($client_secret, '-_', '+/'));
 
         try {
             // Decode the user
             $decodedToken = \JWT::decode($encUser, $secret, ['HS256']);
             // validate that this JWT was made for us
-            if ($decodedToken->aud != $client_id) {
-                throw new CoreException("This token is not intended for us.");
+            if ($decodedToken->aud != $aud) {
+                throw new Exception("This token is not intended for us.");
             }
         } catch(\UnexpectedValueException $e) {
             throw new Exception($e->getMessage());
