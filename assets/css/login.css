@@ -1,0 +1,34 @@
+#extra-options {
+    width: 272px;
+    margin: 15px auto;
+    padding: 0px 24px;
+}
+#extra-options a {
+    text-decoration: none;
+    color: #999;
+}
+#extra-options a:hover {
+    color: #2ea2cc;
+}
+body.a0-widget-open>* {
+    display: inherit;
+}
+#loginform{
+    display: none;
+}
+#login #nav {
+    display: none;
+}
+#a0-widget .a0-panel{
+    margin: auto;
+}
+#auth0-login-form {
+    width: 280px;
+    margin: auto;
+}
+#auth0-login-form {
+    min-height: 250px;
+}
+.auth0-login{
+    margin-bottom: 20px;
+}
