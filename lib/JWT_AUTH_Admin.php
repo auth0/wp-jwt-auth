@@ -9,17 +9,10 @@ class JWT_AUTH_Admin{
     public static function admin_enqueue(){
         if(!isset($_REQUEST['page']) || $_REQUEST['page'] != 'jwta')
             return;
-/*
-        wp_enqueue_media();
-        wp_enqueue_script( 'wpa0_admin', WPA0_PLUGIN_URL . 'assets/js/admin.js', array('jquery'));
-        wp_enqueue_style( 'wpa0_admin', WPA0_PLUGIN_URL . 'assets/css/settings.css');
-        wp_enqueue_style('media');
 
-        wp_localize_script( 'wpa0_admin', 'wpa0', array(
-            'media_title' => __('Choose your icon', WPA0_LANG),
-            'media_button' => __('Choose icon', WPA0_LANG)
-        ));
-*/
+        wp_enqueue_media();
+        wp_enqueue_style( 'jwta', JWT_AUTH_PLUGIN_URL . 'assets/css/settings.css');
+       
     }
 
     protected static function init_option_section($sectionName, $settings)

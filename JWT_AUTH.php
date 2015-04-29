@@ -24,7 +24,6 @@ class JWT_AUTH {
         JWT_AUTH_UserProcessor::init();
         JWT_AUTH_Settings_Section::init();
         JWT_AUTH_Admin::init();
-
     }
 
     private static function autoloader($class)
