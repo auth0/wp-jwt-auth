@@ -18,11 +18,10 @@ class JWT_AUTH {
     {
         spl_autoload_register(array(__CLASS__, 'autoloader'));
 
-        add_filter( 'determine_current_user', array(__CLASS__, 'determine_current_user'), 10);
-        add_filter( 'json_authentication_errors', array(__CLASS__, 'json_authentication_errors'));
         $plugin = plugin_basename(__FILE__);
         add_filter("plugin_action_links_$plugin", array(__CLASS__, 'wp_add_plugin_settings_link'));
 
+        JWT_AUTH_UserProcessor::init();
         JWT_AUTH_Settings_Section::init();
         JWT_AUTH_Admin::init();
 
@@ -48,89 +47,6 @@ class JWT_AUTH {
         return false;
     }
 
-    public static function json_authentication_errors ( $error )
-    {
-    	// Passthrough other errors
-    	if ( ! empty( $error ) ) {
-    		return $error;
-    	}
-
-    	global $wp_json_basic_auth_error;
-
-    	return $wp_json_basic_auth_error;
-    }
-    public static function determine_current_user ($user)
-    {
-        global $wp_json_basic_auth_error;
-
-	    $wp_json_basic_auth_error = null;
-
-        $authorization = false;
-
-        if (function_exists('getallheaders'))
-        {
-            $headers = getallheaders();
-
-            if (isset($headers['Authorization'])) {
-                $authorization = $headers['Authorization'];
-            }
-        }
-        elseif (isset($_SERVER["Authorization"])){
-            $authorization = $_SERVER["Authorization"];
-        }
-
-        if ($authorization !== false) {
-
-            try {
-                $token = self::decodeJWT($authorization);
-            }
-            catch(Exception $e) {
-                $wp_json_basic_auth_error = $e->getMessage();
-                return null;
-            }
-
-            $jwt_attribute = JWT_AUTH_Options::get('jwt_property');
-
-            $objuser = self::findAuth0User($token->$jwt_attribute);
-
-            if (!$objuser) {
-                $wp_json_basic_auth_error = 'Invalid user';
-            }
-
-            $user = $objuser->ID;
-        }
-
-        $wp_json_basic_auth_error = true;
-
-        return $user;
-    }
-
-    protected static function decodeJWT($authorization)
-    {
-        require_once JWT_AUTH_PLUGIN_DIR . 'lib/php-jwt/Exceptions/BeforeValidException.php';
-        require_once JWT_AUTH_PLUGIN_DIR . 'lib/php-jwt/Exceptions/ExpiredException.php';
-        require_once JWT_AUTH_PLUGIN_DIR . 'lib/php-jwt/Exceptions/SignatureInvalidException.php';
-        require_once JWT_AUTH_PLUGIN_DIR . 'lib/php-jwt/Authentication/JWT.php';
-
-        $aud = WP_Auth0_Options::get( 'aud' );
-        $secret = WP_Auth0_Options::get( 'secret' );
-
-        $encUser = str_replace('Bearer ', '', $authorization);
-
-        try {
-            // Decode the user
-            $decodedToken = \JWT::decode($encUser, $secret, ['HS256']);
-            // validate that this JWT was made for us
-            if ($decodedToken->aud != $aud) {
-                throw new Exception("This token is not intended for us.");
-            }
-        } catch(\UnexpectedValueException $e) {
-            throw new Exception($e->getMessage());
-        }
-
-        return $decodedToken;
-    }
-
     // Add settings link on plugin page
     public static function wp_add_plugin_settings_link($links) {
 
@@ -138,36 +54,6 @@ class JWT_AUTH {
         array_unshift($links, $settings_link);
 
         return $links;
-    }
-
-    private static function findUser($id) {
-        global $wpdb;
-
-        $override_user_query = JWT_AUTH_Options::get('override_user_query');
-
-        if (!$override_user_query)
-        {
-            $user_property = esc_sql(JWT_AUTH_Options::get('user_property'));
-            $sql = 'SELECT u.*
-                    FROM ' . $wpdb->users . '
-                    WHERE '.$user_property.' = %s';
-        }
-        else
-        {
-            $sql = $override_user_query;
-        }
-
-        $userRow = $wpdb->get_row($wpdb->prepare($sql, $id));
-
-        if (is_null($userRow)) {
-            return null;
-        }elseif($userRow instanceof WP_Error ) {
-            self::insertAuth0Error('findAuth0User',$userRow);
-            return null;
-        }
-        $user = new WP_User();
-        $user->init($userRow);
-        return $user;
     }
 
     public static function getPluginDirUrl()

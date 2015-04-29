@@ -57,8 +57,10 @@ class JWT_AUTH_Admin{
 
             array('id' => 'jwt_auth_aud', 'name' => 'Aud', 'function' => 'render_aud'),
             array('id' => 'jwt_auth_secret', 'name' => 'Secret', 'function' => 'render_secret'),
+            array('id' => 'jwt_auth_secret_base64_encoded', 'name' => 'Base64 Secret encoded', 'function' => 'render_secret_base64_encoded'),
             array('id' => 'jwt_auth_user_property', 'name' => 'User Property', 'function' => 'render_user_property'),
             array('id' => 'jwt_auth_jwt_attribute', 'name' => 'JWT Attribute', 'function' => 'render_jwt_attribute'),
+            array('id' => 'jwt_auth_override_user_repo', 'name' => 'User Repository', 'function' => 'render_override_user_repo'),
 
         ));
 
@@ -76,6 +78,14 @@ class JWT_AUTH_Admin{
         echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[secret]" id="jwt_auth_secret" value="' . esc_attr( $v ) . '"/>';
         echo '<br/><span class="description">' . __('Secret value to verify the JWT signature.', WPA0_LANG) . '</span>';
     }
+    public static function render_secret_base64_encoded(){
+        $v = JWT_AUTH_Options::get( 'secret_base64_encoded' );
+        echo '<input type="radio" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[secret_base64_encoded]" id="jwt_auth_secret_base64_encoded_yes" value="1" '.($v ? 'checked' : '').' />';
+        echo '<label for="jwt_auth_secret_base64_encoded_yes">Yes</label>';
+        echo '&nbsp;';
+        echo '<input type="radio" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[secret_base64_encoded]" id="jwt_auth_secret_base64_encoded_no" value="0" '.(!$v ? 'checked' : '').' />';
+        echo '<label for="jwt_auth_secret_base64_encoded_no">No</label>';
+    }
     public static function render_user_property(){
         $v = JWT_AUTH_Options::get( 'user_property' );
         echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[user_property]" id="jwt_auth_user_property" value="' . esc_attr( $v ) . '"/>';
@@ -85,6 +95,11 @@ class JWT_AUTH_Admin{
         $v = JWT_AUTH_Options::get( 'jwt_attribute' );
         echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[jwt_attribute]" id="jwt_auth_jwt_attribute" value="' . esc_attr( $v ) . '"/>';
         echo '<br/><span class="description">' . __('JWT Attribute the plugin should use to match the users.', WPA0_LANG) . '</span>';
+    }
+    public static function render_override_user_repo(){
+        $v = JWT_AUTH_Options::get( 'override_user_repo' );
+        echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[override_user_repo]" id="jwt_auth_override_user_repo" value="' . esc_attr( $v ) . '"/>';
+        echo '<br/><span class="description">' . __('The User Repository is how this plugin looks for the users related to the token. When it is empty, it will work searching for a user which matchs the User Property and the JWT Attribute. If it is not empty, a custom repository is configured (probably from another plugin or custom configruation) and will ignore the User Property setting.', WPA0_LANG) . '</span>';
     }
 
     public static function render_settings_page(){
@@ -102,6 +117,8 @@ class JWT_AUTH_Admin{
     }
 
     public static function input_validator( $input ){
+
+        $input['secret_base64_encoded'] = ($input['secret_base64_encoded'] == 1);
 
         return $input;
     }

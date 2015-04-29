@@ -21,9 +21,7 @@ class JWT_AUTH_Options {
     public static function get( $key, $default = null ){
         $options = self::get_options();
 
-        if(!isset($options[$key]))
-            return apply_filters( 'wp_auth0_get_option', $default, $key );
-        return apply_filters( 'wp_auth0_get_option', $options[$key], $key );
+        return $options[$key];
     }
 
     public static function set( $key, $value ){
@@ -40,7 +38,8 @@ class JWT_AUTH_Options {
             'secret' => '',
             'user_property' => 'id',
             'jwt_attribute' => 'sub',
-            'override_user_query' => false,
+            'override_user_repo' => false,
+            'secret_base64_encoded' => false,
         );
     }
 }
