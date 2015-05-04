@@ -39,14 +39,14 @@ class JWT_AUTH_UserProcessor {
         return $authorization;
     }
 
-    protected static function findUser($id) {
+    protected static function findUser($jwt) {
         $overrideUserRepo = JWT_AUTH_Options::get('override_user_repo');
 
         if ($overrideUserRepo) {
-            return call_user_func(array($overrideUserRepo, 'getUser'), $id);
+            return call_user_func(array($overrideUserRepo, 'getUser'), $jwt);
         }
         else {
-            return JWT_AUTH_UsersRepo::getUser($id);
+            return JWT_AUTH_UsersRepo::getUser($jwt);
         }
     }
 
@@ -68,9 +68,7 @@ class JWT_AUTH_UserProcessor {
                 return null;
             }
 
-            $jwt_attribute = JWT_AUTH_Options::get('jwt_attribute');
-
-            $objuser = self::findUser($token->$jwt_attribute);
+            $objuser = self::findUser($token);
 
             if (!$objuser) {
                 $wp_json_basic_auth_error = 'Invalid user';

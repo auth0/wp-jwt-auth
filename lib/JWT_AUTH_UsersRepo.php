@@ -2,8 +2,12 @@
 
 class JWT_AUTH_UsersRepo {
 
-    public static function getUser($id) {
+    public static function getUser($jwt) {
         global $wpdb;
+
+        $jwt_attribute = JWT_AUTH_Options::get('jwt_attribute');
+
+        $id = $jwt->$jwt_attribute;
 
         $user_property = esc_sql(JWT_AUTH_Options::get('user_property'));
 
