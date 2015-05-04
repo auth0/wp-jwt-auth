@@ -12,7 +12,7 @@ class JWT_AUTH_Admin{
 
         wp_enqueue_media();
         wp_enqueue_style( 'jwta', JWT_AUTH_PLUGIN_URL . 'assets/css/settings.css');
-       
+
     }
 
     protected static function init_option_section($sectionName, $settings)
@@ -68,7 +68,7 @@ class JWT_AUTH_Admin{
     }
     public static function render_secret(){
         $v = JWT_AUTH_Options::get( 'secret' );
-        echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[secret]" id="jwt_auth_secret" value="' . esc_attr( $v ) . '"/>';
+        echo '<input type="text" autocomplete="off" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[secret]" id="jwt_auth_secret" value="' . esc_attr( $v ) . '"/>';
         echo '<br/><span class="description">' . __('Secret value to verify the JWT signature.', WPA0_LANG) . '</span>';
     }
     public static function render_secret_base64_encoded(){
