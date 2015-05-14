@@ -20,7 +20,7 @@ class JWT_AUTH_Admin{
         $lowerName = strtolower($sectionName);
         add_settings_section(
             "jwt_auth_{$lowerName}_settings_section",
-            __($sectionName, WPA0_LANG),
+            __($sectionName, JWT_AUTH_LANG),
             array(__CLASS__, "render_{$lowerName}_description"),
             JWT_AUTH_Options::OPTIONS_NAME
         );
@@ -29,7 +29,7 @@ class JWT_AUTH_Admin{
         {
             add_settings_field(
                 $setting['id'],
-                __($setting['name'], WPA0_LANG),
+                __($setting['name'], JWT_AUTH_LANG),
                 array(__CLASS__, $setting['function']),
                 JWT_AUTH_Options::OPTIONS_NAME,
                 "jwt_auth_{$lowerName}_settings_section",
@@ -64,12 +64,12 @@ class JWT_AUTH_Admin{
     public static function render_aud(){
         $v = JWT_AUTH_Options::get( 'aud' );
         echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[aud]" id="jwt_auth_aud" value="' . esc_attr( $v ) . '"/>';
-        echo '<br/><span class="description">' . __('JWT Audience (aud) represents the client id to which it is intended.', WPA0_LANG) . '</span>';
+        echo '<br/><span class="description">' . __('JWT Audience (aud) represents the client id to which it is intended.', JWT_AUTH_LANG) . '</span>';
     }
     public static function render_secret(){
         $v = JWT_AUTH_Options::get( 'secret' );
         echo '<input type="text" autocomplete="off" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[secret]" id="jwt_auth_secret" value="' . esc_attr( $v ) . '"/>';
-        echo '<br/><span class="description">' . __('Secret value to verify the JWT signature.', WPA0_LANG) . '</span>';
+        echo '<br/><span class="description">' . __('Secret value to verify the JWT signature.', JWT_AUTH_LANG) . '</span>';
     }
     public static function render_secret_base64_encoded(){
         $v = JWT_AUTH_Options::get( 'secret_base64_encoded' );
@@ -82,17 +82,17 @@ class JWT_AUTH_Admin{
     public static function render_user_property(){
         $v = JWT_AUTH_Options::get( 'user_property' );
         echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[user_property]" id="jwt_auth_user_property" value="' . esc_attr( $v ) . '"/>';
-        echo '<br/><span class="description">' . __('WP User property which the plugin should look to find the related user.', WPA0_LANG) . '</span>';
+        echo '<br/><span class="description">' . __('WP User property which the plugin should look to find the related user.', JWT_AUTH_LANG) . '</span>';
     }
     public static function render_jwt_attribute(){
         $v = JWT_AUTH_Options::get( 'jwt_attribute' );
         echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[jwt_attribute]" id="jwt_auth_jwt_attribute" value="' . esc_attr( $v ) . '"/>';
-        echo '<br/><span class="description">' . __('JWT Attribute the plugin should use to match the users.', WPA0_LANG) . '</span>';
+        echo '<br/><span class="description">' . __('JWT Attribute the plugin should use to match the users.', JWT_AUTH_LANG) . '</span>';
     }
     public static function render_override_user_repo(){
         $v = JWT_AUTH_Options::get( 'override_user_repo' );
         echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[override_user_repo]" id="jwt_auth_override_user_repo" value="' . esc_attr( $v ) . '"/>';
-        echo '<br/><span class="description">' . __('The User Repository is how this plugin looks for the users related to the token. When it is empty, it will work searching for a user which matchs the User Property and the JWT Attribute. If it is not empty, a custom repository is configured (probably from another plugin or custom configruation) and will ignore the User Property setting.', WPA0_LANG) . '</span>';
+        echo '<br/><span class="description">' . __('The User Repository is how this plugin looks for the users related to the token. When it is empty, it will work searching for a user which matchs the User Property and the JWT Attribute. If it is not empty, a custom repository is configured (probably from another plugin or custom configruation) and will ignore the User Property setting.', JWT_AUTH_LANG) . '</span>';
     }
 
     public static function render_settings_page(){
