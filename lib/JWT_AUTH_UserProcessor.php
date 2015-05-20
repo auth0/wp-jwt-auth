@@ -4,6 +4,7 @@ class JWT_AUTH_UserProcessor {
 
     public static function init() {
 
+        add_filter( 'woocommerce_api_check_authentication', array(__CLASS__, 'determine_current_user_for_wc'), 10);
         add_filter( 'determine_current_user', array(__CLASS__, 'determine_current_user'), 10);
         add_filter( 'json_authentication_errors', array(__CLASS__, 'json_authentication_errors'));
 
@@ -50,7 +51,14 @@ class JWT_AUTH_UserProcessor {
         }
     }
 
-    public static function determine_current_user ($user)
+    public static function determine_current_user_for_wc($user) {
+        return self::determine_current_user_generic($user, true);
+    }
+
+    public static function determine_current_user ($user) {
+        return self::determine_current_user_generic($user, false);
+    }
+    public static function determine_current_user_generic ($user, $returnUserObj)
     {
         global $wp_json_basic_auth_error;
 
@@ -74,7 +82,12 @@ class JWT_AUTH_UserProcessor {
                 $wp_json_basic_auth_error = 'Invalid user';
             }
 
-            $user = $objuser->ID;
+            if ($returnUserObj) {
+                $user = $objuser;
+            }
+            else {
+                $user = $objuser->ID;
+            }
         }
 
         $wp_json_basic_auth_error = true;

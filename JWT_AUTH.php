@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Wordpress JWT Authentication
  * Description: Implements JWT Authentication for APIs
- * Version: 1
+ * Version: 1.0.1
  * Author: Auth0
  * Author URI: https://auth0.com
  */
