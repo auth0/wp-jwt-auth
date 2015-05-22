@@ -38,7 +38,6 @@ class JWT_AUTH_Options {
             'secret' => '',
             'user_property' => 'id',
             'jwt_attribute' => 'sub',
-            'override_user_repo' => false,
             'secret_base64_encoded' => false,
         );
     }

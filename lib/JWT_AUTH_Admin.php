@@ -53,7 +53,6 @@ class JWT_AUTH_Admin{
             array('id' => 'jwt_auth_secret_base64_encoded', 'name' => 'Base64 Secret encoded', 'function' => 'render_secret_base64_encoded'),
             array('id' => 'jwt_auth_user_property', 'name' => 'User Property', 'function' => 'render_user_property'),
             array('id' => 'jwt_auth_jwt_attribute', 'name' => 'JWT Attribute', 'function' => 'render_jwt_attribute'),
-            array('id' => 'jwt_auth_override_user_repo', 'name' => 'User Repository', 'function' => 'render_override_user_repo'),
 
         ));
 
@@ -88,11 +87,6 @@ class JWT_AUTH_Admin{
         $v = JWT_AUTH_Options::get( 'jwt_attribute' );
         echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[jwt_attribute]" id="jwt_auth_jwt_attribute" value="' . esc_attr( $v ) . '"/>';
         echo '<br/><span class="description">' . __('JWT Attribute the plugin should use to match the users.', JWT_AUTH_LANG) . '</span>';
-    }
-    public static function render_override_user_repo(){
-        $v = JWT_AUTH_Options::get( 'override_user_repo' );
-        echo '<input type="text" name="' . JWT_AUTH_Options::OPTIONS_NAME . '[override_user_repo]" id="jwt_auth_override_user_repo" value="' . esc_attr( $v ) . '"/>';
-        echo '<br/><span class="description">' . __('The User Repository is how this plugin looks for the users related to the token. When it is empty, it will work searching for a user which matchs the User Property and the JWT Attribute. If it is not empty, a custom repository is configured (probably from another plugin or custom configruation) and will ignore the User Property setting.', JWT_AUTH_LANG) . '</span>';
     }
 
     public static function render_settings_page(){

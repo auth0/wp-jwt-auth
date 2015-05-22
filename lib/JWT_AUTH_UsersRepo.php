@@ -2,14 +2,21 @@
 
 class JWT_AUTH_UsersRepo {
 
-    public static function getUser($jwt) {
+    public static function init() {
+        add_filter( 'wp_jwt_auth_get_user', array( __CLASS__, 'getUser' ),10);
+    }
+
+    public static function getUser($jwt) { 
         global $wpdb;
 
-        $jwt_attribute = JWT_AUTH_Options::get('jwt_attribute');
-
-        $id = $jwt->$jwt_attribute;
+        if ($jwt instanceof WP_User) return $jwt;
 
         $user_property = esc_sql(JWT_AUTH_Options::get('user_property'));
+        $jwt_attribute = JWT_AUTH_Options::get('jwt_attribute');
+
+        if (trim($user_property) == '' || trim($jwt_attribute) == '') return;
+
+        $id = $jwt->$jwt_attribute;
 
         $sql = 'SELECT u.*
                 FROM ' . $wpdb->users . '
