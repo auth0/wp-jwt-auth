@@ -21,11 +21,7 @@ class JWT_AUTH {
         $plugin = plugin_basename(__FILE__);
         add_filter("plugin_action_links_$plugin", array(__CLASS__, 'wp_add_plugin_settings_link'));
 
-        // add_filter( 'allowed_http_origin', '__return_true' );
-        add_action( 'init', array( __CLASS__, 'add_headers' ), 99 );
-        // add_action( 'send_headers', array( __CLASS__, 'send_cors_headers' ), 99 );
-        // add_filter( 'wp_headers', array( __CLASS__, 'send_cors_headers' ), 99 );
-        // add_filter( 'json_serve_request', array( __CLASS__, 'send_cors_headers' ), 99 );        
+        add_action( 'init', array( __CLASS__, 'add_headers' ), 99 );       
 
         JWT_AUTH_UsersRepo::init();
         JWT_AUTH_UserProcessor::init();
