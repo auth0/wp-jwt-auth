@@ -40,10 +40,10 @@ class JWT_AUTH_UserProcessor {
         return $authorization;
     }
 
-    protected static function findUser($jwt) {
+    protected static function findUser($jwt, $encodedJWT) {
         $overrideUserRepo = JWT_AUTH_Options::get('override_user_repo');
 
-        return apply_filters( 'wp_jwt_auth_get_user', $jwt );
+        return apply_filters( 'wp_jwt_auth_get_user', $jwt, $encodedJWT );
     }
 
     public static function determine_current_user_for_wc($user) {
@@ -61,7 +61,9 @@ class JWT_AUTH_UserProcessor {
 
         $authorization = self::getAuthorizationHeader();
 
-        if ($authorization !== false) {
+        $authorization = str_replace('Bearer ', '', $authorization);
+
+        if ($authorization !== '') {
 
             try {
                 $token = self::decodeJWT($authorization);
@@ -71,10 +73,11 @@ class JWT_AUTH_UserProcessor {
                 return null;
             }
 
-            $objuser = self::findUser($token);
+            $objuser = self::findUser($token, $authorization);
 
             if (!$objuser) {
                 $wp_json_basic_auth_error = 'Invalid user';
+                return null;
             }
 
             if ($returnUserObj) {
@@ -90,7 +93,7 @@ class JWT_AUTH_UserProcessor {
         return $user;
     }
 
-    protected static function decodeJWT($authorization)
+    protected static function decodeJWT($encUser)
     {
         require_once JWT_AUTH_PLUGIN_DIR . 'lib/php-jwt/Exceptions/BeforeValidException.php';
         require_once JWT_AUTH_PLUGIN_DIR . 'lib/php-jwt/Exceptions/ExpiredException.php';
@@ -105,8 +108,6 @@ class JWT_AUTH_UserProcessor {
             $secret = base64_decode(strtr($secret, '-_', '+/'));
         }
 
-        $encUser = str_replace('Bearer ', '', $authorization);
-
         try {
             // Decode the user
             $decodedToken = \JWT::decode($encUser, $secret, ['HS256']);
@@ -116,7 +117,6 @@ class JWT_AUTH_UserProcessor {
                 throw new Exception("This token is not intended for us.");
             }
         } catch(\UnexpectedValueException $e) {
-            die($e->getMessage());
             throw new Exception($e->getMessage());
         }
 
