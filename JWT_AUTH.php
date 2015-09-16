@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Wordpress JWT Authentication
  * Description: Implements JWT Authentication for APIs
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Auth0
  * Author URI: https://auth0.com
  */
@@ -21,7 +21,7 @@ class JWT_AUTH {
         $plugin = plugin_basename(__FILE__);
         add_filter("plugin_action_links_$plugin", array(__CLASS__, 'wp_add_plugin_settings_link'));
 
-        add_action( 'init', array( __CLASS__, 'add_headers' ), 99 );       
+        add_action( 'init', array( __CLASS__, 'add_headers' ), 99 );
 
         JWT_AUTH_UsersRepo::init();
         JWT_AUTH_UserProcessor::init();
@@ -30,15 +30,15 @@ class JWT_AUTH {
     }
 
     public static function add_headers() {
-        header('Access-Control-Allow-Origin:'. get_http_origin()); 
-        header('Access-Control-Allow-Credentials: true'); 
+        header('Access-Control-Allow-Origin:'. get_http_origin());
+        header('Access-Control-Allow-Credentials: true');
 
         if ( 'OPTIONS' == $_SERVER['REQUEST_METHOD'] ) {
             if ( isset( $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'] ) ) {
-                header('Access-Control-Allow-Methods: GET, POST, OPTIONS'); 
+                header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
             }
             if ( isset( $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'] ) ) {
-                header('Access-Control-Allow-Headers: ' . $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']); 
+                header('Access-Control-Allow-Headers: ' . $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']);
             }
             die('options');
         }

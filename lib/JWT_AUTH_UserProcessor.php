@@ -43,7 +43,9 @@ class JWT_AUTH_UserProcessor {
     protected static function findUser($jwt, $encodedJWT) {
         $overrideUserRepo = JWT_AUTH_Options::get('override_user_repo');
 
-        return apply_filters( 'wp_jwt_auth_get_user', $jwt, $encodedJWT );
+        $response = apply_filters( 'wp_jwt_auth_get_user', $jwt, $encodedJWT );
+
+        return $response;
     }
 
     public static function determine_current_user_for_wc($user) {
@@ -57,7 +59,7 @@ class JWT_AUTH_UserProcessor {
     {
         global $wp_json_basic_auth_error;
 
-	    $wp_json_basic_auth_error = null;
+	      $wp_json_basic_auth_error = null;
 
         $authorization = self::getAuthorizationHeader();
 
