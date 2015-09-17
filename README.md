@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/auth0/wp-auth0/master/banner-1544x500.png)
+![](https://raw.githubusercontent.com/auth0/wp-jwt-auth/master/banner-1544x500.png)
 
 #Wordpress JWT Authentication
 
