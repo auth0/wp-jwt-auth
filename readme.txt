@@ -15,6 +15,16 @@ This plugin targets to add a easy way to authenticate your APIs using JWT.
 
 Also, it provides a basic way to match the users and allow you to extend base on your needs easily with a filter.
 
+How it works
+
+This plugin will check the headers of the requests and if there is an `Authorization` header will try to log in a user that matches. So it is as easy to check for the current user to authenticate users in your own API.
+
+Also, it provides support for the following plugins:
+- http://wp-api.org/
+- http://docs.woothemes.com/document/woocommerce-rest-api/
+
+And any other that extends `Wp Rest Api` like http://tweichart.github.io/JSON-API-for-BuddyPress/ for BuddyPress.
+
 == Installation ==
 
 1. Install from the WordPress Store or upload the entire `wp-jwt-aith` folder to the `/wp-content/plugins/` directory.
