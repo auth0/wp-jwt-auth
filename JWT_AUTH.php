@@ -35,7 +35,7 @@ class JWT_AUTH {
 
         if ( 'OPTIONS' == $_SERVER['REQUEST_METHOD'] ) {
             if ( isset( $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'] ) ) {
-                header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+                header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
             }
             if ( isset( $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'] ) ) {
                 header('Access-Control-Allow-Headers: ' . $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']);
@@ -49,7 +49,8 @@ class JWT_AUTH {
         // Access-Control headers are received during OPTIONS requests
         if ( 'OPTIONS' == $_SERVER['REQUEST_METHOD'] ) {
             if ( isset( $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'] ) ) {
-                $headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
+                $headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
+                
             }
             if ( isset( $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'] ) ) {
                 $headers['Access-Control-Allow-Headers'] = $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'];
