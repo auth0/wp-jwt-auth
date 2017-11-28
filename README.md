@@ -1,6 +1,6 @@
 # DEPRECATED - This library is no longer maintained/supported.
 
-This library was built as an example for a conference, and is no longer supported.
+This library was built as an example for a session in a PHP conference, and is no longer supported.
 
 ![](https://raw.githubusercontent.com/auth0/wp-jwt-auth/master/banner-1544x500.png)
 
