@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: Wordpress JWT Authentication
- * Description: Implements JWT Authentication for APIs
+ * Plugin Name: Wordpress JWT Authentication [DEPRECATED]
+ * Description: Implements JWT Authentication for APIs [DEPRECATED]
  * Version: 1.1.3
  * Author: Auth0
  * Author URI: https://auth0.com
