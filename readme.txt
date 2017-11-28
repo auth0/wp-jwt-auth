@@ -11,6 +11,8 @@ Authenticate your APIs with JWT easily.
 
 == Description ==
 
+DEPRECATED - This library is no longer maintained/supported.
+
 This plugin targets to add a easy way to authenticate your APIs using JWT.
 
 Also, it provides a basic way to match the users and allow you to extend base on your needs easily with a filter.
